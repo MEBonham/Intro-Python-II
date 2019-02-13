@@ -79,8 +79,13 @@ while command != "q":
             pc.room = pc.room.w_to
         else:
             print(move_error)
-    elif command == "take":
-        print(pc.take_item("Coin"))
+    elif command:
+        complex_command = command.split()
+        if len(complex_command) == 2:
+            verb = complex_command[0]
+            noun = complex_command[1]
+            if verb == "take":
+                print(pc.take_item( noun.capitalize() ))
         
     print(pc.room)
     print(pc.room.display_items())
