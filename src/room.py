@@ -1,21 +1,18 @@
-import textwrap
-
 # Implement a class to hold room information. This should have name and
 # description attributes.
 class Room:
-    def __init__(self, name, description, char_line_limit):
+    def __init__(self, name, description, naturally_lit):
         self.name = name
         self.description = description
+        self.is_light = naturally_lit
         self.n_to = None
         self.s_to = None
         self.e_to = None
         self.w_to = None
         self.items = []
-        self.wrapper = textwrap.TextWrapper(char_line_limit)
 
     def __str__(self):
-        wrapped = self.wrapper.fill(text=self.description)
-        return f'{self.name}:\n{"-" * (len(self.name) + 1)}\n{wrapped}'
+        return f'{self.name}:\n{"-" * (len(self.name) + 1)}\n{self.description}'
 
     def add_item(self, item):
         self.items.append(item)
@@ -34,5 +31,4 @@ class Room:
         else:
             item_names = [x.name for x in self.items]
             str_form = ", ".join(item_names)
-            wrapped = self.wrapper.fill(text=f'Items: {str_form}')
-            return wrapped
+            return f'Items: {str_form}'

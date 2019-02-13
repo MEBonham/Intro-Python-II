@@ -1,17 +1,28 @@
 from room import Room
 from player import Player
-from item import Item
+from item import Item, LightSource
+import textwrap
 
-char_line_limit = 70
+# Declare game-wide "constants"
+char_line_limit = 90
+
+# Declare global functions
+
+wrapper = textwrap.TextWrapper(width=char_line_limit, replace_whitespace=False)
+def print_wrap(foo):
+    if isinstance(foo, str):
+        print(wrapper.fill(text=foo))
+    else:
+        print(wrapper.fill( text=str(foo) ))
 
 # Declare all the rooms
 
 rooms = {
-    'outside':  Room("Outside Cave Entrance", "North of you, the cave mount beckons", char_line_limit),
-    'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty passages run north and east.""", char_line_limit),
-    'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling into the darkness. Ahead to the north, a light flickers in the distance, but there is no way across the chasm.""", char_line_limit),
-    'narrow':   Room("Narrow Passage", """The narrow passage bends here from west to north. The smell of gold permeates the air.""", char_line_limit),
-    'treasure': Room("Treasure Chamber", """You've found the long-lost treasure chamber! Sadly, it has already been completely emptied by earlier adventurers. The only exit is to the south.""", char_line_limit)
+    'outside':  Room("Outside Cave Entrance", "North of you, the cave mount beckons", True),
+    'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty passages run north and east.""", True),
+    'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling into the darkness. Ahead to the north, a light flickers in the distance, but there is no way across the chasm.""", False),
+    'narrow':   Room("Narrow Passage", """The narrow passage bends here from west to north. The smell of gold permeates the air.""", False),
+    'treasure': Room("Treasure Chamber", """You've found the long-lost treasure chamber! Sadly, it has already been completely emptied by earlier adventurers. The only exit is to the south.""", False)
 }
 
 # Link rooms together
@@ -28,6 +39,7 @@ rooms['treasure'].s_to = rooms['narrow']
 # Populate rooms with items
 rooms['foyer'].add_item(Item("Potion", "You can drink this to boost your health."))
 rooms['foyer'].add_item(Item("Coins", "These can be used to buy stuff."))
+rooms['foyer'].add_item(LightSource("Lamp", "This burns oil for light."))
 rooms['outside'].add_item(Item("Stick", "A very crude weapon."))
 rooms['narrow'].add_item(Item("Coin", "This can be used to buy stuff."))
 rooms['narrow'].add_item(Item("Coin", "This can be used to buy stuff."))
@@ -40,7 +52,7 @@ rooms['treasure'].add_item(Item("Rope", "Good for lots of things."))
 #
 
 # Make a new player object that is currently in the 'outside' room.
-pc = Player( rooms['outside'], char_line_limit )
+pc = Player( rooms['outside'] )
 
 # Write a loop that:
 #
@@ -79,10 +91,15 @@ while command != "q":
             pc.room = pc.room.w_to
         else:
             print(move_error)
+
+    # View inventory
     elif command == "i" or command == "inv" or command == "inventory":
-        print(pc.display_items())
+        print_wrap( pc.display_items() )
+        print("")
+
+    # Parse more complex commands as multiple words
     elif command:
-        complex_command = command.split()
+        complex_command = command.split(' ', 1)
 
         if len(complex_command) == 2:
             verb = complex_command[0]
@@ -96,8 +113,8 @@ while command != "q":
         else:
             print("Command not understood.\n")
         
-    print(pc.room)
-    print(pc.room.display_items())
+    print_wrap( pc.room )
+    print_wrap( pc.room.display_items() )
 
     command = input("What do you want to do? ")
     print('')
