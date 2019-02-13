@@ -1,3 +1,5 @@
+from item import LightSource
+
 # Write a class to hold player information, e.g. what room they are in
 # currently.
 class Player:
@@ -42,3 +44,13 @@ class Player:
             item_names = [x.name for x in self.inventory]
             str_form = ", ".join(item_names)
             return f'Items: {str_form}'
+
+    def can_see(self):
+        if self.room.is_light:
+            return True
+        # for i in self.inventory if isinstance(i, LightSource):
+        for i in self.inventory:
+            if isinstance(i, LightSource):
+                return True
+        return False
+    

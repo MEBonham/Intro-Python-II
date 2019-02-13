@@ -113,8 +113,11 @@ while command != "q":
         else:
             print("Command not understood.\n")
         
-    print_wrap( pc.room )
-    print_wrap( pc.room.display_items() )
+    if pc.can_see():
+        print_wrap( pc.room )
+        print_wrap( pc.room.display_items() )
+    else:
+        print("It's pitch black!")
 
     command = input("What do you want to do? ")
     print('')
