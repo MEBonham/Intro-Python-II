@@ -40,7 +40,7 @@ rooms['treasure'].add_item(Item("Rope", "Good for lots of things."))
 #
 
 # Make a new player object that is currently in the 'outside' room.
-pc = Player( rooms['outside'] )
+pc = Player( rooms['outside'], char_line_limit )
 
 # Write a loop that:
 #
@@ -79,13 +79,22 @@ while command != "q":
             pc.room = pc.room.w_to
         else:
             print(move_error)
+    elif command == "i" or command == "inv" or command == "inventory":
+        print(pc.display_items())
     elif command:
         complex_command = command.split()
+
         if len(complex_command) == 2:
             verb = complex_command[0]
             noun = complex_command[1]
-            if verb == "take":
+
+            if verb == "take" or verb == "get":
                 print(pc.take_item( noun.capitalize() ))
+            if verb == "drop":
+                print(pc.drop_item( noun.capitalize() ))
+
+        else:
+            print("Command not understood.\n")
         
     print(pc.room)
     print(pc.room.display_items())
