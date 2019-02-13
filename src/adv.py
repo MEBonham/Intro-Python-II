@@ -1,16 +1,18 @@
 from room import Room
 from player import Player
+from item import Item
+
+char_line_limit = 70
 
 # Declare all the rooms
 
 rooms = {
-    'outside':  Room("Outside Cave Entrance", "North of you, the cave mount beckons"),
-    'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty passages run north and east."""),
-    'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling into the darkness. Ahead to the north, a light flickers in the distance, but there is no way across the chasm."""),
-    'narrow':   Room("Narrow Passage", """The narrow passage bends here from west to north. The smell of gold permeates the air."""),
-    'treasure': Room("Treasure Chamber", """You've found the long-lost treasure chamber! Sadly, it has already been completely emptied by earlier adventurers. The only exit is to the south."""),
+    'outside':  Room("Outside Cave Entrance", "North of you, the cave mount beckons", char_line_limit),
+    'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty passages run north and east.""", char_line_limit),
+    'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling into the darkness. Ahead to the north, a light flickers in the distance, but there is no way across the chasm.""", char_line_limit),
+    'narrow':   Room("Narrow Passage", """The narrow passage bends here from west to north. The smell of gold permeates the air.""", char_line_limit),
+    'treasure': Room("Treasure Chamber", """You've found the long-lost treasure chamber! Sadly, it has already been completely emptied by earlier adventurers. The only exit is to the south.""", char_line_limit)
 }
-
 
 # Link rooms together
 
@@ -22,6 +24,14 @@ rooms['overlook'].s_to = rooms['foyer']
 rooms['narrow'].w_to = rooms['foyer']
 rooms['narrow'].n_to = rooms['treasure']
 rooms['treasure'].s_to = rooms['narrow']
+
+# Populate rooms with items
+rooms['foyer'].add_item(Item("Potion"))
+rooms['foyer'].add_item(Item("Coins"))
+rooms['outside'].add_item(Item("Stick"))
+rooms['narrow'].add_item(Item("Coin"))
+rooms['narrow'].add_item(Item("Coin"))
+rooms['treasure'].add_item(Item("Rope"))
 
 #
 # Main
@@ -69,6 +79,7 @@ while command != "q":
             print(move_error)
         
     print(pc.room)
+    print(pc.room.display_items())
 
     command = input("What do you want to do? ")
     print('')
