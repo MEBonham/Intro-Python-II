@@ -26,12 +26,14 @@ rooms['narrow'].n_to = rooms['treasure']
 rooms['treasure'].s_to = rooms['narrow']
 
 # Populate rooms with items
-rooms['foyer'].add_item(Item("Potion"))
-rooms['foyer'].add_item(Item("Coins"))
-rooms['outside'].add_item(Item("Stick"))
-rooms['narrow'].add_item(Item("Coin"))
-rooms['narrow'].add_item(Item("Coin"))
-rooms['treasure'].add_item(Item("Rope"))
+rooms['foyer'].add_item(Item("Potion", "You can drink this to boost your health."))
+rooms['foyer'].add_item(Item("Coins", "These can be used to buy stuff."))
+rooms['outside'].add_item(Item("Stick", "A very crude weapon."))
+rooms['narrow'].add_item(Item("Coin", "This can be used to buy stuff."))
+rooms['narrow'].add_item(Item("Coin", "This can be used to buy stuff."))
+rooms['narrow'].add_item(Item("Stick", "A very crude weapon."))
+rooms['narrow'].add_item(Item("Coin", "This can be used to buy stuff."))
+rooms['treasure'].add_item(Item("Rope", "Good for lots of things."))
 
 #
 # Main
@@ -77,6 +79,8 @@ while command != "q":
             pc.room = pc.room.w_to
         else:
             print(move_error)
+    elif command == "take":
+        print(pc.take_item("Coin"))
         
     print(pc.room)
     print(pc.room.display_items())

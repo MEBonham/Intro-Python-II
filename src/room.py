@@ -20,6 +20,14 @@ class Room:
     def add_item(self, item):
         self.items.append(item)
 
+    def remove_item(self, item_name):
+        self.items.reverse()   # All the reverses are just to make it so you'll take the last item if there are duplicates
+        for i in range(len(self.items)):
+            if self.items[i].name == item_name:
+                self.items.pop(i)
+                break
+        self.items.reverse()
+
     def display_items(self):
         if len(self.items) == 0:
             return "Items: none"
