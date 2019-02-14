@@ -32,3 +32,9 @@ class Room:
             item_names = [x.name for x in self.items]
             str_form = ", ".join(item_names)
             return f'Items: {str_form}'
+
+
+class Store(Room):
+    def __init__(self, name, description, naturally_lit):
+        super().__init__(name, description, naturally_lit)
+        
