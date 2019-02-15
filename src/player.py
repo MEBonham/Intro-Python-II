@@ -1,3 +1,4 @@
+from random import randint
 from item import LightSource
 from room import Store
 
@@ -17,7 +18,7 @@ class Player:
             if not available:
                 return "That item is not available to take.\n"
             elif isinstance(self.room, Store):
-                return "Stealing isn't that easy.\n"
+                return "Stealing isn't THAT easy.\n"
             else:
                 return self.take_item(item_name, available[0])
 
@@ -29,6 +30,19 @@ class Player:
             print(message)
         return f'{item_name} successfully taken!\n'
 
+    def try_buy_item(self, item_name):
+        if not self.can_see():
+            return "Good luck finding that in the dark!\n"
+        elif not isinstance(self.room, Store):
+            return "You can't buy stuff here!\n"
+        else:
+            available = [x for x in self.room.items if x.name == item_name]
+            if not available:
+                return "The store doesn't have that.\n"
+            else:
+                
+
+
     def try_drop_item(self, item_name):
         available = [x for x in self.inventory if x.name == item_name]
         if not available:
@@ -39,9 +53,9 @@ class Player:
             return self.drop_item(item_name, available[0])
 
     def drop_item(self, item_name, item):
-        self.room.add_item(available[0])
+        self.room.add_item(item)
 
-        message = available[0].on_drop()
+        message = item.on_drop()
         if message:
             print(message)
 
@@ -65,11 +79,11 @@ class Player:
 
     def display_items(self):
         if len(self.inventory) == 0:
-            return "Items: none\n"
+            return f"Wealth: {self.wealth}\nItems: none"
         else:
             item_names = [x.name for x in self.inventory]
             str_form = ", ".join(item_names)
-            return f'Items: {str_form}'
+            return f'Wealth: {self.wealth}\nItems: {str_form}'
 
     def can_see(self):
         if self.room.is_light:
@@ -80,4 +94,9 @@ class Player:
         return False
     
     def boost_wealth(self, value):
-        pass
+        rolled_total = 0
+        for i in range(self.wealth):
+            if randint(1, 6) > 4:
+                rolled_total += 1
+        if value > rolled_total:
+            self.wealth += (value - rolled_total)

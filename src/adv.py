@@ -120,6 +120,8 @@ while command != "q":
                 print(pc.try_drop_item( noun.capitalize() ))
             elif verb == "sell":
                 print(pc.try_sell_item( noun.capitalize() ))
+            elif verb == "buy":
+                print(pc.try_buy_item( noun.capitalize() ))
 
         else:
             print("Command not understood.\n")
